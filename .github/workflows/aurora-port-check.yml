@@ -1,0 +1,56 @@
+name: Aurora multi-screen port validation
+
+on:
+  push:
+    branches:
+      - port/aurora-20261108-multiscreen
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  patch:
+    name: Apply contribution to pinned Aurora main
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout sharing repository
+        uses: actions/checkout@v4
+        with:
+          path: share
+
+      - name: Checkout Aurora at reviewed commit
+        uses: actions/checkout@v4
+        with:
+          repository: Aurora-Viewer/Aurora-Viewer
+          ref: 069f41e84c3e64a0a636b95062b47dcf552c3efc
+          fetch-depth: 1
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /crates/aurora-viewer/**
+            /crates/aurora-i18n/locales/**
+            /Cargo.toml
+            /Cargo.lock
+          path: aurora
+
+      - name: Check patch portability without modifying upstream
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd aurora
+          git apply --check --verbose ../share/0001-multiscreen-porting-reference.patch
+          git apply ../share/0001-multiscreen-porting-reference.patch
+          git apply --check --verbose ../share/0002-chat-viewport-identity-test.patch
+          git apply ../share/0002-chat-viewport-identity-test.patch
+          git diff --check
+
+      - name: Verify isolated contribution branding
+        shell: bash
+        run: |
+          set -euo pipefail
+          if grep -iE '(tasia|marty|fresh-projects|igrid|api[_-]?key\s*=)' share/000*.patch share/src/*.rs; then
+            echo "Unexpected project branding or configuration in code/patches" >&2
+            exit 1
+          fi
