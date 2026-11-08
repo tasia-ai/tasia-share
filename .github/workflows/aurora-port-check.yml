@@ -44,6 +44,22 @@ jobs:
           git apply ../share/0003-aurora-069f41e-rebased.patch
           git diff --check
 
+      - name: Check Rust syntax and formatting in modified files
+        shell: bash
+        run: |
+          set -euo pipefail
+          rustup component add rustfmt
+          rustfmt --edition 2024 --config skip_children=true --check \
+            aurora/crates/aurora-viewer/src/app.rs \
+            aurora/crates/aurora-viewer/src/main.rs \
+            aurora/crates/aurora-viewer/src/native_viewports.rs \
+            aurora/crates/aurora-viewer/src/settings.rs \
+            aurora/crates/aurora-viewer/src/settings/backup.rs \
+            aurora/crates/aurora-viewer/src/ui/widgets.rs \
+            aurora/crates/aurora-viewer/src/ui/chat/popout.rs \
+            aurora/crates/aurora-viewer/src/ui/options/pages/layout.rs \
+            aurora/crates/aurora-viewer/src/window_display.rs
+
       - name: Verify isolated contribution branding
         shell: bash
         run: |
