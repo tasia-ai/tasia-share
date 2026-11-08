@@ -1402,3 +1402,26 @@ diff --git a/crates/aurora-viewer/src/ui/chat/popout.rs b/crates/aurora-viewer/s
      fn a_window_docks_back_or_closes_with_its_conversation() {
          let mut popped = Popped::default();
          popped.pop_out(id(1), false, false, false);
+diff --git a/Cargo.lock b/Cargo.lock
+--- a/Cargo.lock
++++ b/Cargo.lock
+@@ -1831,17 +1831,19 @@
+ name = "egui-wgpu"
+ version = "0.37.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "0309cbe1febed48af5b974e4bcc424b35e9664863a4d402697147b57a488c864"
+ dependencies = [
+  "ahash",
+  "bytemuck",
+  "document-features",
++ "egui",
+  "epaint",
+  "log",
+  "profiling",
+  "thiserror 2.0.21",
+  "type-map",
+  "web-time",
+  "wgpu",
++ "winit",
+ ]
+ 
