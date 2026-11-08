@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - port/aurora-20261108-multiscreen
+      - port/aurora-20261108-latest-check
   workflow_dispatch:
 
 permissions:
@@ -24,7 +25,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: Aurora-Viewer/Aurora-Viewer
-          ref: 069f41e84c3e64a0a636b95062b47dcf552c3efc
+          ref: 1efb1f9f63c7bfe4bc219d35cdc0e19c87829421
           fetch-depth: 1
           filter: blob:none
           sparse-checkout-cone-mode: false
