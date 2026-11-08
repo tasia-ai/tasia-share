@@ -50,6 +50,15 @@ diff --git a/crates/aurora-viewer/Cargo.toml b/crates/aurora-viewer/Cargo.toml
  egui-winit = "0.37.0"
  emojis = "0.9.0"
  # imported Hunspell dictionaries in their own SET encoding (spelling.rs);
+@@ -58,7 +58,8 @@
+ png = "0.18.1"
+ md5 = "0.8.1"
+ memmap2 = "0.9.11"
+ parking_lot = "0.13.0"
++pollster = "1.0.1"
+ # CommonMark parsing for notecard previews; MIT licensed, no HTML runtime.
+ pulldown-cmark = { version = "0.13.4", default-features = false }
+ reqwest = { version = "0.13.5", default-features = false, features = ["rustls"] }
 diff --git a/crates/aurora-viewer/src/app.rs b/crates/aurora-viewer/src/app.rs
 --- a/crates/aurora-viewer/src/app.rs
 +++ b/crates/aurora-viewer/src/app.rs
@@ -1405,6 +1414,15 @@ diff --git a/crates/aurora-viewer/src/ui/chat/popout.rs b/crates/aurora-viewer/s
 diff --git a/Cargo.lock b/Cargo.lock
 --- a/Cargo.lock
 +++ b/Cargo.lock
+@@ -529,7 +529,8 @@
+  "log",
+  "meshopt",
+  "openjpeg-sys",
+  "parking_lot 0.13.0",
++ "pollster 1.0.1",
+  "parry3d",
+  "rayon",
+  "ring",
 @@ -1831,17 +1831,19 @@
  name = "egui-wgpu"
  version = "0.37.0"
