@@ -1414,15 +1414,15 @@ diff --git a/crates/aurora-viewer/src/ui/chat/popout.rs b/crates/aurora-viewer/s
 diff --git a/Cargo.lock b/Cargo.lock
 --- a/Cargo.lock
 +++ b/Cargo.lock
-@@ -529,7 +529,8 @@
-  "log",
-  "meshopt",
-  "openjpeg-sys",
+@@ -743,7 +743,8 @@
+  "objc2 0.6.5",
+  "objc2-app-kit 0.3.2",
+  "objc2-core-foundation",
   "parking_lot 0.13.0",
 + "pollster 1.0.1",
-  "parry3d",
+  "png",
+  "pulldown-cmark",
   "rayon",
-  "ring",
 @@ -1831,17 +1831,19 @@
  name = "egui-wgpu"
  version = "0.37.0"
