@@ -13,7 +13,7 @@ jobs:
   patch:
     name: Apply contribution to pinned Aurora main
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 45
     steps:
       - name: Checkout sharing repository
         uses: actions/checkout@v4
@@ -69,3 +69,19 @@ jobs:
             echo "Unexpected project branding or configuration in code/patches" >&2
             exit 1
           fi
+
+      - name: Checkout full Aurora workspace for compile
+        shell: bash
+        run: git -C aurora sparse-checkout disable
+
+      - name: Install Linux build prerequisites
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libasound2-dev libudev-dev libxkbcommon-dev libwayland-dev
+
+      - name: Cargo check the rebased viewer
+        shell: bash
+        run: |
+          cd aurora
+          cargo check --locked -p aurora-viewer
