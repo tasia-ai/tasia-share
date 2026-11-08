@@ -1,32 +1,33 @@
-# Porting notes — not yet PR-ready
+# Aurora multi-monitor port — technical notes
 
-## Baseline
+## Reviewed baseline and build result
 
-Development source: multi-screen implementation added in October 2026, with later refinements. The reference patch preserves selected implementation hunks rather than all changes from that development commit.
+- Aurora upstream: `069f41e84c3e64a0a636b95062b47dcf552c3efc` (8 November 2026).
+- Complete rebased patch: `0003-aurora-069f41e-rebased.patch`; supersedes historical reference patches `0001` and `0002`.
+- [Successful hosted validation](https://github.com/tasia-ai/tasia-share/actions/runs/42518001909): patch applies, whitespace and Rustfmt checks pass, no unintended project branding found, `cargo check --locked -p aurora-viewer` succeeds on Linux.
+- **Not yet validated:** full unit tests, Windows/macOS builds, actual interaction across multiple monitors and display hot-plug scenarios.
 
-Target: `Aurora-Viewer/Aurora-Viewer` at a **fresh current main** checkout.
+## Integration details
 
-**Unverified:** No upstream branch was created, no compilation was run, and no native multi-monitor interactive test was run while preparing this package. The current upstream `app.rs` is too large for a reliable full-file read through the available interface.
+- `app.rs`: initializes/tears down the native viewport host; routes secondary-window events to it; shares egui texture updates and uses the event loop's synchronous scope for root UI passes. The port preserves current fullscreen handling and recent chat/input changes.
+- `ui/widgets.rs`: bridges Floater embedded/native state, native drag, reattachment and root geometry restoration.
+- `ui/chat/popout.rs`: tests stable unique IDs for multiple detached conversations.
+- `native_viewports.rs`: native window/input/texture lifecycle and unit tests, with one shared egui Context and a separate UI painter (no extra 3D scene renderer).
+- `window_display.rs`: display matching, placement restore, DPI changes, and fallback for unreachable/off-screen windows.
+- `settings.rs`, `settings/backup.rs`, Layout preferences and translations: persist the display recovery option and display bounds without overwriting unrelated settings.
+- `Cargo.toml` and `Cargo.lock`: enable `egui-wgpu` winit integration and declare `pollster` for native painter initialization.
 
-## Required adaptation
+## Next validation before proposing an upstream PR
 
-- `app.rs`: integrate the window-host initialization, event dispatch, redraw loop, texture deltas and shutdown against current upstream. Validate the geometry persistence and monitor-recovery paths.
-- `ui/widgets.rs`: rebase all Floater changes, especially embedded/native state transfer, title-bar drag and reattachment, without changing existing window semantics.
-- `ui/chat/popout.rs`: add stable per-conversation native viewport identity tests and make sure each chat panel reattaches correctly.
-- `main.rs`: register only the native viewport and window display modules. **Do not** register or launch the experimental process-isolation prototype.
-- `settings.rs`, `settings/backup.rs`, Layout preferences: integrate new fields without data loss or breaking settings migrations.
-- Locales: the English and French strings are in the reference patch; update Japanese and other localizations to match current locale structure.
-- Cargo: enable the required egui-wgpu winit integration for the exact version pinned in upstream and update lockfile with Cargo.
-- Validate closing secondary windows, preserving/releasing textures, mouse capture, drag-and-drop, clipboard and IME input.
+1. Run targeted `cargo test -p aurora-viewer` tests covering `native_viewports`, `window_display`, chat popouts and affected UI logic; then broader project tests and Clippy.
+2. Verify native tear-off, typing, focus, clipboard, drag, resize, docking/reattachment, close and monitor disconnect/reconnect on Windows and Linux hardware with mixed DPI.
+3. Rebase again onto the precise Aurora main revision chosen for upstream review; repeat all checks.
+4. Create an actual public GitHub fork of Aurora (this repository is not a fork), commit just the focused code changes, and open a draft PR after maintainers agree on the feature scope.
 
-## Branding and scope gate
+## Safety / scope
 
-Before any upstream submission, inspect **the full diff against Aurora upstream**, not just the changed files. Reject the PR if it includes viewer branding, unrelated source files, custom services, private endpoints, tokens, secrets, or a changed README, release configuration or assets.
+Review the scoped unsafe event-loop pointer and ensure it never outlives a synchronous viewport callback. Check texture cleanup, window close behavior and correct event routing. Compilation success is not runtime validation.
 
-The source files in this share repository are normalized, but that fact does **not** guarantee the source repository's baseline is suitable for a pull request.
+Never copy viewer branding, logos, themes, service endpoints, private credentials, release settings, unrelated changes, or the experimental process-per-floater prototype into the upstream PR. Audit the *full diff against Aurora upstream*.
 
-## Safety review
-
-The native viewport host uses an unsafe dereference of an event-loop pointer managed within a synchronous scope with a Drop guard. Review that the pointer never escapes the scope and that callbacks cannot invoke it after teardown. Confirm correct child-window event routing and no UI or texture resources remain after close.
-
-Treat a successful unit test as necessary, not sufficient; verify with actual two- and three-monitor setups and DPI changes.
+Retain applicable GPL-3.0-or-later source license and original author notices.
