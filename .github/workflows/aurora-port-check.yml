@@ -40,17 +40,15 @@ jobs:
         run: |
           set -euo pipefail
           cd aurora
-          git apply --check --verbose ../share/0001-multiscreen-porting-reference.patch
-          git apply ../share/0001-multiscreen-porting-reference.patch
-          git apply --check --verbose ../share/0002-chat-viewport-identity-test.patch
-          git apply ../share/0002-chat-viewport-identity-test.patch
+          git apply --check --verbose ../share/0003-aurora-069f41e-rebased.patch
+          git apply ../share/0003-aurora-069f41e-rebased.patch
           git diff --check
 
       - name: Verify isolated contribution branding
         shell: bash
         run: |
           set -euo pipefail
-          if grep -iE '(tasia|marty|fresh-projects|igrid|api[_-]?key\s*=)' share/000*.patch share/src/*.rs; then
+          if grep -iE '(tasia|marty|fresh-projects|igrid|api[_-]?key\s*=)' share/0003-aurora-069f41e-rebased.patch share/src/*.rs; then
             echo "Unexpected project branding or configuration in code/patches" >&2
             exit 1
           fi
