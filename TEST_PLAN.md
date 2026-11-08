@@ -1,8 +1,11 @@
 # Validation plan for native detachable windows
 
 ## Code / build
-- [ ] Format with `cargo fmt --all -- --check`.
-- [ ] Run project-wide `cargo check`, Clippy and required CI checks on a clean upstream branch.
+- [x] Patch applies to Aurora `069f41e` with `git apply --check` and `git diff --check`.
+- [x] Rustfmt syntax/format check of modified files using Aurora's `rustfmt.toml`.
+- [x] Linux `cargo check --locked -p aurora-viewer` ([successful run](https://github.com/tasia-ai/tasia-share/actions/runs/42518001909)).
+- [x] Static scan of contributed code/patch for unrelated project branding.
+- [ ] Run full-workspace `cargo fmt --all -- --check`, Clippy and required project CI on a clean upstream branch.
 - [ ] Run the `window_display` and `native_viewports` unit tests, plus all affected `widgets` and `chat/popout` tests.
 - [ ] Confirm original window placement continues to work with this feature disabled.
 - [ ] Audit `unsafe` event-loop pointer usage, native event lifetime and texture-delta order.
@@ -29,4 +32,4 @@
 - [ ] Check GPU usage, FPS, memory and input responsiveness with 0, 1 and 3 detached floaters.
 - [ ] Confirm translations, accessibility/focus behavior, layout migration and existing settings work.
 
-Record actual pass/fail evidence in the eventual upstream PR; none of these are marked complete in this staging package.
+Record actual pass/fail evidence in the eventual upstream PR. Checked automated gates above are verified; all unchecked tests still need to be performed.
