@@ -9,7 +9,6 @@ diff --git a/crates/aurora-i18n/locales/en.ftl b/crates/aurora-i18n/locales/en.f
  ui-notifications-close-decline-offer = Close (decline offer)
  ui-media-close-esc = Close (Esc)
  ui-environment-close-and-return-to-shared-environment = Close and return to shared environment
-
 @@ -8462,6 +8463,8 @@ ui-chat-menu-activate-group = Activate group
  ui-options-snap-windows = Snap windows
  ui-options-snap-windows-help = Hold Alt while moving a window to snap it to another window, a bar or a screen edge. Without Alt, moving creates no attachment. Attached windows move together; Alt detaches the window you drag and lets you attach it elsewhere. Resizing snaps automatically; Alt disables snapping during a resize.
@@ -19,7 +18,6 @@ diff --git a/crates/aurora-i18n/locales/en.ftl b/crates/aurora-i18n/locales/en.f
  ui-options-windows-stop-at-edges-help = Checked, a window stays whole on the screen on that side. Unchecked, it can be moved past that edge; a part of its title bar always stays on the screen to bring it back. A window never goes above the top of the screen.
  ui-options-edge-left = Left
  ui-options-edge-right = Right
-
 diff --git a/crates/aurora-i18n/locales/fr.ftl b/crates/aurora-i18n/locales/fr.ftl
 --- a/crates/aurora-i18n/locales/fr.ftl
 +++ b/crates/aurora-i18n/locales/fr.ftl
@@ -31,7 +29,6 @@ diff --git a/crates/aurora-i18n/locales/fr.ftl b/crates/aurora-i18n/locales/fr.f
  ui-notifications-close-decline-offer = Fermer (refuse l'offre)
  ui-media-close-esc = Fermer (Échap)
  ui-environment-close-and-return-to-shared-environment = Fermer et repasser à l'environnement partagé
-
 @@ -8455,6 +8456,8 @@ ui-chat-menu-activate-group = Activer le groupe
  ui-options-snap-windows = Aimanter les fenêtres
  ui-options-snap-windows-help = Maintenir Alt pendant le déplacement permet de coller une fenêtre à une autre, à une barre ou à un bord de l'écran. Sans Alt, déplacer une fenêtre ne crée aucun lien. Les fenêtres attachées bougent ensemble ; Alt détache la fenêtre déplacée et permet de l'attacher ailleurs. Le redimensionnement aimante automatiquement les bords ; Alt désactive cet aimant pendant le redimensionnement.
@@ -41,7 +38,6 @@ diff --git a/crates/aurora-i18n/locales/fr.ftl b/crates/aurora-i18n/locales/fr.f
  ui-options-windows-stop-at-edges-help = Coché, une fenêtre reste entière à l'écran de ce côté. Décoché, on peut la déplacer au-delà de ce bord ; une partie de sa barre de titre reste toujours à l'écran pour la ramener. Une fenêtre ne passe jamais au-dessus du haut de l'écran.
  ui-options-edge-left = Gauche
  ui-options-edge-right = Droite
-
 diff --git a/crates/aurora-viewer/Cargo.toml b/crates/aurora-viewer/Cargo.toml
 --- a/crates/aurora-viewer/Cargo.toml
 +++ b/crates/aurora-viewer/Cargo.toml
@@ -65,7 +61,6 @@ diff --git a/crates/aurora-viewer/src/app.rs b/crates/aurora-viewer/src/app.rs
      logo: Option<egui::TextureHandle>,
      logo_rx: Option<crossbeam_channel::Receiver<LogoData>>,
      world: World,
-
 @@ -1012,6 +1014,7 @@ impl App {
          let cache_root = cache.clone();
          let geometry_needs = crate::scene::geometry_need::GeometryNeeds::load(&cache);
@@ -74,7 +69,6 @@ diff --git a/crates/aurora-viewer/src/app.rs b/crates/aurora-viewer/src/app.rs
          // Restore window state before the theme and fonts: loading egui's
          // memory drops pending font definitions and the transient text scale.
          if std::env::var_os("AURORA_CAPTURE").is_none() || std::env::var_os("AURORA_CAPTURE_LAYOUT").is_some() {
-
 @@ -1071,6 +1081,7 @@ impl App {
              net,
              gfx: None,
@@ -83,7 +77,6 @@ diff --git a/crates/aurora-viewer/src/app.rs b/crates/aurora-viewer/src/app.rs
              logo: None,
              logo_rx: Some(rx),
              world: {
-
 @@ -5272,7 +5284,7 @@ impl App {
          if let Some(g) = self.gfx.as_ref().filter(|_| forced_window_size().is_none()) {
              self.settings.window_maximized = g.window.is_maximized();
@@ -93,7 +86,6 @@ diff --git a/crates/aurora-viewer/src/app.rs b/crates/aurora-viewer/src/app.rs
                  let s = g.window.inner_size();
                  let sf = g.window.scale_factor();
                  self.settings.window_width = (s.width as f64 / sf) as u32;
-
 @@ -5281,6 +5293,11 @@ impl App {
                      self.settings.window_x = Some(p.x);
                      self.settings.window_y = Some(p.y);
@@ -106,7 +98,6 @@ diff --git a/crates/aurora-viewer/src/app.rs b/crates/aurora-viewer/src/app.rs
              }
          }
          if self.capture.is_none() {
-
 @@ -5314,7 +5331,7 @@ impl App {
      /// Remember the normal (not maximized / minimized) window size and
      /// position, 300 ms after the last move / resize: while maximizing,
@@ -116,7 +107,6 @@ diff --git a/crates/aurora-viewer/src/app.rs b/crates/aurora-viewer/src/app.rs
          let Some(t) = self.geom_changed else {
              return;
          };
-
 @@ -5325,20 +5342,48 @@ impl App {
          let Some(g) = &self.gfx else {
              return;
@@ -172,7 +162,6 @@ diff --git a/crates/aurora-viewer/src/app.rs b/crates/aurora-viewer/src/app.rs
      }
  
      /// Navigation bar: teleport to a typed / pasted place (SLURL, Region/x/y/z,
-
 @@ -9175,6 +9220,16 @@ impl App {
              self.system_fonts_pending = !ui::fonts::apply(&self.egui_ctx, &ui_font(&self.settings));
          }
@@ -190,7 +179,6 @@ diff --git a/crates/aurora-viewer/src/app.rs b/crates/aurora-viewer/src/app.rs
          raw.events.extend(self.alt_text.drain(..).map(egui::Event::Text));
          self.demo_script_input(&mut raw);
          if self.demo && std::env::var("AURORA_DEMO_OPTIONS").is_ok_and(|mode| mode == "1:scale-keys") {
-
 @@ -9446,28 +9501,31 @@ impl App {
          let mut library_drop = None;
          let t_pass = Instant::now();
@@ -244,7 +232,6 @@ diff --git a/crates/aurora-viewer/src/app.rs b/crates/aurora-viewer/src/app.rs
          // a capture leaves the user's layout as it is (as at exit)
          if self.capture.is_none() {
              self.layout_autosave.after_pass(&ctx, Instant::now());
-
 @@ -9656,6 +9714,8 @@ impl App {
                  self.plate_hover,
              );
@@ -254,7 +241,6 @@ diff --git a/crates/aurora-viewer/src/app.rs b/crates/aurora-viewer/src/app.rs
          gfx.egui_state
              .handle_platform_output_with_event_loop(&gfx.window, event_loop, full.platform_output);
          self.perf.ui_ms = t_ui.elapsed().as_secs_f32() * 1000.0;
-
 @@ -15473,16 +15533,30 @@ impl ApplicationHandler for App {
          let capture = capture || forced.is_some();
          let mut pos = None;
@@ -295,7 +281,6 @@ diff --git a/crates/aurora-viewer/src/app.rs b/crates/aurora-viewer/src/app.rs
              }
          }
          // a "normal" size covering the whole screen is a maximized window
-
 @@ -17830,10 +17904,17 @@ impl ApplicationHandler for App {
      /// closed connection and every exit ended in a segmentation fault (before
      /// the browsers' private profiles were cleaned up).
@@ -315,7 +300,6 @@ diff --git a/crates/aurora-viewer/src/app.rs b/crates/aurora-viewer/src/app.rs
          // the digits of a Windows Alt code typed in a text field are kept
          // from it (alt_codes.rs); the character comes at Alt's release
          if self.alt_code_key(&event) {
-
 @@ -17892,6 +17973,12 @@ impl ApplicationHandler for App {
                  ui::menu::window_geometry_changed(&self.egui_ctx);
                  self.geom_changed = Some(Instant::now());
@@ -329,7 +313,6 @@ diff --git a/crates/aurora-viewer/src/app.rs b/crates/aurora-viewer/src/app.rs
              WindowEvent::RedrawRequested => {
                  self.frame(event_loop);
              }
-
 @@ -18260,7 +18347,7 @@ impl ApplicationHandler for App {
  
      fn about_to_wait(&mut self, event_loop: &ActiveEventLoop) {
@@ -354,7 +337,6 @@ diff --git a/crates/aurora-viewer/src/main.rs b/crates/aurora-viewer/src/main.rs
  mod raw_mouse;
  mod report_abuse;
  mod scene;
-
 @@ -92,6 +94,7 @@ mod updater;
  mod url_scheme;
  mod voice;
@@ -363,7 +345,6 @@ diff --git a/crates/aurora-viewer/src/main.rs b/crates/aurora-viewer/src/main.rs
  mod window_hold;
  mod window_show;
  mod world;
-
 diff --git a/crates/aurora-viewer/src/native_viewports.rs b/crates/aurora-viewer/src/native_viewports.rs
 new file mode 100644
 --- /dev/null
@@ -797,7 +778,6 @@ diff --git a/crates/aurora-viewer/src/settings.rs b/crates/aurora-viewer/src/set
      pub window_maximized: bool,
      /// Legacy single-account authorization, read once for migration only.
      #[serde(skip_serializing)]
-
 @@ -1667,6 +1671,8 @@ impl Default for Settings {
              window_height: 900,
              window_x: None,
@@ -807,7 +787,6 @@ diff --git a/crates/aurora-viewer/src/settings.rs b/crates/aurora-viewer/src/set
              window_maximized: false,
              mfa_hash: String::new(),
              font: crate::ui::fonts::DEFAULT.into(),
-
 @@ -2476,6 +2482,8 @@ impl Settings {
              window_height: old.window_height,
              window_x: old.window_x,
@@ -828,7 +807,6 @@ diff --git a/crates/aurora-viewer/src/settings/backup.rs b/crates/aurora-viewer/
      "window_maximized",
      "cache_location",
      "chat_log_location",
-
 @@ -266,6 +267,7 @@ impl Settings {
          self.window_height = current.window_height;
          self.window_x = current.window_x;
@@ -917,7 +895,6 @@ diff --git a/crates/aurora-viewer/src/ui/widgets.rs b/crates/aurora-viewer/src/u
          super::layout::set_partial_outside(ctx, egui::Id::unique(self.id), self.partial_outside);
          if window_hidden(ctx, egui::Id::unique(self.id), *open, self.chat) {
              if self.cascade.is_some() {
-
 @@ -524,29 +579,42 @@ impl<'a> Floater<'a> {
          let expand_asked = ctx.data_mut(|d| d.remove_temp::<bool>(egui::Id::unique(self.id).with(EXPAND)));
          let mut toggle_min = minimized && expand_asked.unwrap_or(false);
@@ -969,7 +946,6 @@ diff --git a/crates/aurora-viewer/src/ui/widgets.rs b/crates/aurora-viewer/src/u
          // A resizable window left larger than the room (the viewer window
          // was made smaller) is brought down to it, as Firestorm's floaters
          // are (LLFloaterView::adjustToFitScreen).
-
 @@ -599,19 +667,23 @@ impl<'a> Floater<'a> {
          }
          // the viewer window changed size: the floater follows its edges;
@@ -999,7 +975,6 @@ diff --git a/crates/aurora-viewer/src/ui/widgets.rs b/crates/aurora-viewer/src/u
              let rect = on_pixels(
                  ctx,
                  super::layout::resizing(ctx, p, window_id, drag.rect(), drag.edges(), drag.minimum()),
-
 @@ -632,10 +704,16 @@ impl<'a> Floater<'a> {
          // quick drag of the left or top edge pushed the whole window back
          // by what that size exceeded, its opposite edge moving for a frame
@@ -1019,7 +994,6 @@ diff --git a/crates/aurora-viewer/src/ui/widgets.rs b/crates/aurora-viewer/src/u
          };
          if let Some(pos) = ctx.data_mut(|d| d.remove_temp::<egui::Pos2>(window_id.with(PLACE_POS))) {
              asked = Some(pos);
-
 @@ -650,7 +728,7 @@ impl<'a> Floater<'a> {
          // Whatever places the window, its title bar stays in reach: egui
          // lets a window larger than its limits slide out of them by what it
@@ -1029,7 +1003,6 @@ diff --git a/crates/aurora-viewer/src/ui/widgets.rs b/crates/aurora-viewer/src/u
              w = w.current_pos(pos);
          }
          // `steady_size`: once shown, the body in the window's exact rect
-
 @@ -713,6 +791,14 @@ impl<'a> Floater<'a> {
                          if title_button(ui, p, icon).on_hover_text(tip).clicked() {
                              toggle_min = true;
@@ -1045,7 +1018,6 @@ diff --git a/crates/aurora-viewer/src/ui/widgets.rs b/crates/aurora-viewer/src/u
                          for (icon, tip, clicked) in &mut self.actions {
                              let response = title_button(ui, p, icon).on_hover_text(*tip);
                              #[cfg(test)]
-
 @@ -823,6 +909,12 @@ impl<'a> Floater<'a> {
              {
                  toggle_min = true;
@@ -1059,7 +1031,6 @@ diff --git a/crates/aurora-viewer/src/ui/widgets.rs b/crates/aurora-viewer/src/u
              if compact {
                  divider(ui, p);
                  ui.add_space(5.0);
-
 @@ -855,6 +947,15 @@ impl<'a> Floater<'a> {
          });
          if let Some(response) = response {
@@ -1076,7 +1047,6 @@ diff --git a/crates/aurora-viewer/src/ui/widgets.rs b/crates/aurora-viewer/src/u
              if content_sized {
                  let too_tall = if scrolls {
                      still_too_tall
-
 @@ -863,7 +964,9 @@ impl<'a> Floater<'a> {
                  };
                  ctx.data_mut(|d| d.insert_temp(scroll_id, too_tall));
@@ -1088,7 +1058,6 @@ diff --git a/crates/aurora-viewer/src/ui/widgets.rs b/crates/aurora-viewer/src/u
              if self.cascade.is_some() {
                  cascade::shown(ctx, window_id, response.response.rect, minimized);
              }
-
 @@ -923,6 +1026,19 @@ impl<'a> Floater<'a> {
      }
  }
