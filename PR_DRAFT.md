@@ -1,48 +1,47 @@
-# feat(ui): detachable native windows for multi-monitor layouts
+# feat(ui): native detachable windows for multi-monitor layouts
 
 No issue
 
 ## What it is for
 
-Users with multiple displays can move selected UI floaters, including Conversations, out of the main viewer and position them on a second or third monitor. The main 3D scene remains in the original viewer window, without an additional login or renderer.
+Users with multiple displays can move supported UI floaters, including Conversations, into independent native desktop windows. The main 3D scene stays in the primary viewer, without an extra login or duplicate scene renderer.
 
 ## Legacy Viewer origin
 
-The expected user-facing workflow follows the Legacy Viewer's detached utility windows and standard desktop multi-monitor behaviour. The underlying implementation is native Rust/winit/egui, not a port of the Legacy Viewer's C++ window manager.
+The expected behavior follows separate utility windows in the Legacy Viewer, implemented here natively in Rust/egui/winit rather than copying its C++ window management.
 
 ## What changes
 
-- **UI:** optional native tear-off and reattachment for existing floaters; stable native viewport identity for multiple conversations, preserving current visual styling
-- **Window handling:** independent native-window event routing, painter lifecycle, and shared egui texture updates, without a second 3D renderer
-- **Displays:** persistent monitor-aware placement, scale/DPI handling and recovery if a previously used display disappears
-- **Preferences:** window display recovery enabled by default
-- **Localization:** strings for the detachable-window controls and recovery setting in English, French and Japanese
-- **Dependencies:** enable egui-wgpu winit integration and declare pollster for native viewport setup
-- **Compatibility:** leave existing fullscreen behaviour, chat input, scene rendering and default in-viewer layout unchanged
+- **Interface:** detachable/reattachable floaters with independent window input, focus and stable per-conversation viewport IDs.
+- **Rendering:** UI-only painter for additional native windows, using the existing egui context and shared texture updates.
+- **Window placement:** monitor-aware geometry recovery, mixed-DPI support and safe fallback for disconnected monitors.
+- **Preferences:** display recovery option enabled by default.
+- **Localization:** new UI strings in English, French and Japanese.
+- **Dependencies:** native egui-wgpu window support, pollster and corresponding Cargo lockfile changes.
+- **Scope:** no unrelated branding, themes, service integrations or renderer/network modifications.
 
 ## Screenshots
 
-Not provided yet. The source code has been used in a downstream viewer over an extended period, but this exact rebased upstream snapshot has not been visually recorded.
+No screenshots from the exact rebased upstream version are available yet. The corresponding functionality has been used in a downstream viewer over an extended period.
 
 ## Tests
 
-- [x] Linux `cargo check --locked -p aurora-viewer` against Aurora main `069f41e`, [successful CI](https://github.com/tasia-ai/tasia-share/actions/runs/42518001909) (before the Japanese translation addition)
-- [x] `git apply --check`, `git diff --check` and Rustfmt on the same reviewed revision
-- [x] Scan of contributed patch/code for unrelated branding
-- [ ] Re-run CI with Japanese localization changes and latest Aurora main
-- [ ] Complete unit tests, Clippy, and project CI checks
-- [ ] Windows/macOS compilation
-- [ ] Record human multi-monitor validation against a build with this **exact upstream rebased diff**
+- [x] [Patch application, formatting, branding checks and Linux `cargo check --locked -p aurora-viewer` on Aurora `1efb1f9f`](https://github.com/tasia-ai/tasia-share/actions/runs/42520286821).
+- [x] Single clean commit in a real Aurora fork, affecting exactly 14 implementation, configuration and translation files.
+- [ ] Aurora's PR CI, full workspace unit tests, Clippy and Windows/macOS platform checks.
+- [ ] Human validation of multi-monitor interactions against this exact upstream rebased build.
 
-**User feedback:** the underlying multi-window implementation has been in practical use in a downstream viewer for an extended period and is considered validated there. This does not establish that this particular Aurora integration was executed on multi-monitor hardware.
+**Human feedback:** the underlying feature has been used regularly in a downstream viewer for a long period. This is relevant functional experience, but it does not establish direct testing of this exact upstream build.
 
 ## Limits and follow-up
 
-- The patch intentionally excludes experimental process-per-floater isolation, external service integrations, branding, and unrelated changes.
-- The implementation contains a scoped unsafe event-loop pointer; it requires an explicit lifetime/safety review.
-- Confirm GPU/device-loss recovery and detached-window texture cleanup on Windows/Linux/macOS.
-- The current `tasia-share` repository is a patch distribution repository, **not** a GitHub fork of Aurora, so this draft must be submitted from a real fork branch containing the source changes rather than the patch file.
+- This should be treated as a **draft PR** until the outstanding CI and platform checks and the final human interaction verification have completed.
+- Review the scoped unsafe event-loop pointer's lifetime and teardown, native window lifecycle, DPI change handling and secondary texture cleanup.
+- The experimental child-process floater prototype is not included.
+- Related issues: #277 (detachable import window) and #1090 (multiple inventory windows); this PR supplies the native-window foundation, not independent duplicate inventories.
 
-## Contributor note
+## Submission
 
-Proposed implementation: [standalone patch](https://github.com/tasia-ai/tasia-share/blob/main/0003-aurora-069f41e-rebased.patch). All changes must be rebased onto the actual upstream PR base and verified before submission.
+Proposed source branch: [`tasia-ai:feat/native-multimonitor-floaters`](https://github.com/tasia-ai/Aurora-Viewer/tree/feat/native-multimonitor-floaters).
+
+Target: `Aurora-Viewer/Aurora-Viewer:main`. All actual changes live in this fork branch, not in a standalone patch file. Please open as **Draft pull request**.
