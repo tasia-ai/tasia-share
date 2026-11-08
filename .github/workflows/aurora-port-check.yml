@@ -33,6 +33,7 @@ jobs:
             /crates/aurora-i18n/locales/**
             /Cargo.toml
             /Cargo.lock
+            /rustfmt.toml
           path: aurora
 
       - name: Check patch portability without modifying upstream
@@ -49,7 +50,7 @@ jobs:
         run: |
           set -euo pipefail
           rustup component add rustfmt
-          rustfmt --edition 2024 --config skip_children=true --check \
+          rustfmt --edition 2024 --config-path aurora/rustfmt.toml --config skip_children=true --check \
             aurora/crates/aurora-viewer/src/app.rs \
             aurora/crates/aurora-viewer/src/main.rs \
             aurora/crates/aurora-viewer/src/native_viewports.rs \
