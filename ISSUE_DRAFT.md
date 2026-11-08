@@ -11,6 +11,6 @@ Proposed scope:
 - Remembered window geometry without trapping windows off-screen.
 - No additional login, world session or secondary 3D renderer.
 
-An early Rust prototype and unit tests exist. It has **not** yet been fully validated against current Aurora main or across Windows/Linux multi-monitor configurations. The intention is to submit an isolated patch after rebasing and testing, not an unrelated fork customization.
+A focused Rust patch has been rebased onto Aurora main commit `069f41e` (8 November 2026) and passes clean patch application, Rustfmt, branding checks and Linux `cargo check --locked -p aurora-viewer`. The full test suite, Windows/macOS builds and interactive multi-monitor scenarios are **not yet validated**. The intention is to contribute a reviewed upstream patch, not unrelated fork customization.
 
 If this direction fits Aurora's roadmap, would maintainers prefer a first PR limited to display placement/recovery, followed by native detachable floaters as a separate PR?
